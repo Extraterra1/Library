@@ -9,6 +9,7 @@
   font-family: "Basico", sans-serif;
   --text-white: rgb(232, 230, 227);
   --text-dark: #343a40;
+  --text-danger: #dc3545;
   --bg-success: #28a745;
 }
 
@@ -89,6 +90,19 @@ ul {
 
 .buttons ion-icon {
   cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.buttons ion-icon:hover {
+  transform: scale(1.5);
+  transition: all 0.3s ease;
+}
+
+.buttons ion-icon[name="trash-outline"]:hover {
+  color: var(--text-danger);
+}
+.buttons ion-icon[name="checkbox-outline"]:hover {
+  color: var(--bg-success);
 }
 
 .btn {
