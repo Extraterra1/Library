@@ -7,6 +7,10 @@ function Book(title, author, pages, read) {
   this.read = Boolean(read);
   //Give random id to book
   this.id = Math.floor(Math.random() * 1000);
+
+  this.toggleReadStatus = () => {
+    this.read = !this.read;
+  };
 }
 
 const createElementFromHTML = function (htmlString) {
@@ -54,11 +58,10 @@ const deleteBook = function (e) {
 
 const toggleRead = function (e) {
   const id = this.getAttribute("data-id");
-  const bookIsRead = myLibrary.find((e) => e.id == id).read;
-  const bookIndex = myLibrary.findIndex((e) => e.id == id);
+  const book = myLibrary.find((e) => e.id == id);
+  const bookIsRead = book.read;
 
-  //Update myLibrary Arr
-  myLibrary[bookIndex].read = !myLibrary[bookIndex].read;
+  book.toggleReadStatus();
 
   //Update HTML
   const li = document.querySelector(`.card[data-id="${id}"] ul li:nth-child(3)`);
