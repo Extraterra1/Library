@@ -9,12 +9,17 @@ function Book(title, author, pages, read) {
   this.id = Math.floor(Math.random() * 1000);
 }
 
-function createElementFromHTML(htmlString) {
+const createElementFromHTML = function (htmlString) {
   var div = document.createElement("div");
   div.innerHTML = htmlString.trim();
 
   return div.firstChild;
-}
+};
+
+const addActionsListeners = function (parent) {
+  parent.querySelector('ion-icon[name="trash-outline"]').addEventListener("click", deleteBook);
+  parent.querySelector('ion-icon[name="checkbox-outline"]').addEventListener("click", toggleRead);
+};
 
 const generateCard = (book) => {
   const cardString = `<div data-id="${book.id}" class="card">
@@ -22,7 +27,7 @@ const generateCard = (book) => {
           <ul>
             <li><ion-icon name="pencil-outline"></ion-icon>Author: ${book.author}</li>
             <li><ion-icon name="book-outline"></ion-icon>Length: ${book.pages} Pages</li>
-            <li>${book.read ? "Read" : "Not read"} </li>
+            <li>${book.read ? "Read ✅" : "Not read ❌"} </li>
           </ul>
           <div class="buttons">
             <ion-icon data-id="${book.id}" name="checkbox-outline"></ion-icon>
@@ -30,8 +35,7 @@ const generateCard = (book) => {
           </div>
         </div>`;
   const cardHTML = createElementFromHTML(cardString);
-  cardHTML.querySelector('ion-icon[name="trash-outline"]').addEventListener("click", deleteBook);
-  cardHTML.querySelector('ion-icon[name="checkbox-outline"]').addEventListener("click", toggleRead);
+  addActionsListeners(cardHTML);
   document.querySelector(".library").appendChild(cardHTML);
 };
 
@@ -58,8 +62,8 @@ const toggleRead = function (e) {
 
   //Update HTML
   const li = document.querySelector(`.card[data-id="${id}"] ul li:nth-child(3)`);
-  if (bookIsRead) return (li.textContent = "Not read");
-  li.textContent = "Read";
+  if (bookIsRead) return (li.textContent = "Not read ❌");
+  li.textContent = "Read ✅";
 };
 
 const submitBook = function (e) {
@@ -76,7 +80,14 @@ document.querySelector(".btn.fixed").addEventListener("click", () => {
   document.querySelector(".modal").classList.toggle("visible");
 });
 
-const { title, author, pages, read } = { title: "Lord of the Rings", author: "JRR Tolkien", pages: 320, read: true };
-addBookToLibrary(title, author, pages, read);
+const defaultBooks = [
+  { title: "Lord of the Rings", author: "JRR Tolkien", pages: 320, read: true },
+  { title: "Red Rising", author: "Pierce Brown", pages: 250, read: true },
+  { title: "The Great Gatsby", author: "F. Scott Fitzgerald", pages: 123, read: true },
+  { title: "Lightbringer", author: "Pierce Brown", pages: 847, read: false },
+  { title: "Of Mice and Men", author: "John Steinbeck", pages: 87, read: true },
+];
+
+defaultBooks.forEach((e) => addBookToLibrary(e.title, e.author, e.pages, e.read));
 
 document.querySelector(".modal button").addEventListener("click", submitBook);
